@@ -14,4 +14,4 @@ class Manager extends Employee {
     }
 }
 
-const julia = new Manager('julia', 1, 'test@tester.com', 2)
+let julia = new Manager('julia', 1, 'test@tester.com', 2)

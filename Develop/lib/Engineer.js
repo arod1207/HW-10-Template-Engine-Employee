@@ -14,4 +14,4 @@ class Engineer extends Employee {
     }
 }
 
-const julia = new Manager('julia', 1, 'test@tester.com', 2)
+const julia = new Engineer('julia', 1, 'test@tester.com', 2)

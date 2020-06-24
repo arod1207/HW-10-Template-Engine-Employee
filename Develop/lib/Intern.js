@@ -15,3 +15,5 @@ class Intern extends Employee {
 }
 
 let julia = new Intern('julia', 1, 'test@tester.com', 2)
+
+module.exports = Intern;

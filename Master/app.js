@@ -14,6 +14,9 @@ const Employee = require("./lib/Employee");
 // ARRAY STORING EMPLOYEE OBJECTS //
 let employees = [];
 
+// Console.log to display start of app //
+console.log("Lets add some team members")
+
 // STARTING THE NEW MANAGER FUNCTION //
 newManager();
 

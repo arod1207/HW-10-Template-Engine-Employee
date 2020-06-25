@@ -10,10 +10,10 @@
  
      
 ## Installation
- ### To you the generator, you must have node.js installed.  Npm is also recommended to download the inquirer module.  
+ ### To use the generator, you must have node.js installed.  Npm is also recommended to download the inquirer module needed to run the app.  
       
 ## Usage
- ### To use the app, run "node app.js",  then input the information needed at the given prompts. A team.html file will be generated in the output folder.  Open the html file in your browser to see the team members displayed
+ ### To use the app, run "node app.js" in the terminal,  then input the information needed at the given prompts. A team.html file will be generated in the output folder.  Open the html file in your browser to see the team members displayed
       
  
 

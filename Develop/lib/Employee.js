@@ -19,6 +19,6 @@ class Employee {
     }
 }
 
-const mando = new Employee('mando', 1, 'test@test.com')
+
 
 module.exports = Employee;

@@ -11,80 +11,13 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const Employee = require("./lib/Employee");
 
+// ARRAY STORING EMPLOYEE OBJECTS //
 let employees = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+// STARTING THE NEW MANAGER FUNCTION //
+newManager();
 
-// inquirer
-//   .prompt([
-//     {
-//       type: "input",
-//       message: "What is your manager's name?",
-//       name: "managerName",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your manager's ID?",
-//       name: "managerID",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your manager's email?",
-//       name: "managerEmail",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your manager's office number?",
-//       name: "officeNumber",
-//     },
-//     {
-//       type: "list",
-//       message: "Would type of team memver would yo like to add?",
-//       choices: ["Engineer", "Intern", "I dont want to add anymore team members"],
-//       name: 'teamMembers',
-//       when: function(answers) {
-//         if(answers.teamMembers === "Engineer") {}
-//       }
-//     },
-//     {
-//       type: "input",
-//       message: "What is your engineer's name?",
-//       name: "engineersName",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your engineer's ID?",
-//       name: "engineersID",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your engineer's email?",
-//       name: "engineersEmail",
-//     },
-//     {
-//       type: "input",
-//       message: "What is your engineer's github user name?",
-//       name: "githubUserName",
-//     },
-//   ])
-//   .then((answers) => {
-//     let manager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.officeNumber);
-//     let engineer = new Engineer(answers.engineersName, answers.engineersID, answers.engineersEmail, answers.githubUserName)
-//     employees.push(manager);
-//     employees.push(engineer)
-//     let data = render(employees);
-//     fs.writeFile(outputPath, data, (err) => {
-//       if (err) throw err;
-//       console.log("HTML File Created");
-//     });
-//   })
-//   .catch((error) => {
-//     if (error.isTtyError) {
-//       console.log('There was an error wrting the file')
-//     }
-//   });
-
+// NEW MANAGER FUNCTION //
 function newManager() {
   inquirer
     .prompt([
@@ -92,51 +25,36 @@ function newManager() {
         type: "input",
         message: "What is your manager's name?",
         name: "managerName",
+        validate: name => isNaN(name) ? true : "Please enter a valid name."
       },
       {
         type: "input",
         message: "What is your manager's ID?",
         name: "managerID",
+        validate: number => !isNaN(number) ? true : "Please enter a valid ID number."
       },
       {
         type: "input",
         message: "What is your manager's email?",
         name: "managerEmail",
+        validate: email => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email) ? true : "Please enter a valid e-mail address."
       },
       {
         type: "input",
         message: "What is your manager's office number?",
         name: "officeNumber",
+        validate: number => !isNaN(number) ? true : "Please enter a valid office number."
       },
-      // {
-      //   type: "list",
-      //   message: "Would you like to add another team member?",
-      //   name: "teamMember",
-      //   choices: ["Engineer", "Intern", "I am done adding team members"],
-      // },
     ])
     .then((answers) => {
-      addNewEmployee()
-      if (answers.teamMember === "Engineer") {
-        newEngineer();
-        let manager = new Manager(answers.managerName ,answers.managerID ,answers.managerEmail ,answers.officeNumber);
-        employees.push(manager);
-        addNewEmployee();
-      } else if (answers.teamMember === "Intern") {
-        newIntern();
-        let manager = new Manager(answers.managerName ,answers.managerID ,answers.managerEmail ,answers.officeNumber);
-        employees.push(manager);
-        addNewEmployee();
-      } else {
-        let manager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.officeNumber);
-        employees.push(manager);
-        let data = render(employees);
-        fs.writeFile(outputPath, data, (err) => {
-          if (err) throw err;
-          console.log("All Team Members Added")
-          console.log("HTML File Created");
-        });
-      }
+      let manager = new Manager(
+        answers.managerName,
+        answers.managerID,
+        answers.managerEmail,
+        answers.officeNumber
+      );
+      employees.push(manager);
+      addNewEmployee();
     })
     .catch((error) => {
       if (error.isTtyError) {
@@ -145,79 +63,100 @@ function newManager() {
     });
 }
 
-function newIntern(){
+// NEW INTERN FUNCTION //
+function newIntern() {
   inquirer
-.prompt([
-  {
-    type: "input",
-    message: "What is your intern's name?",
-    name: "internName",
-  },
-  {
-    type: "input",
-    message: "What is your intern's ID?",
-    name: "internID",
-  },
-  {
-    type: "input",
-    message: "What is your intern's email?",
-    name: "internEmail",
-  },
-  {
-    type: "input",
-    message: "What school did the intern go to?",
-    name: "school",
-  },
-])
-.then((answers) => {
-  let intern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.school)
-  employees.push(intern)
-})
-.catch((error) => {
-  if (error.isTtyError) {
-    console.log('There was an error wrting the file')
-  }
-});
+    .prompt([
+      {
+        type: "input",
+        message: "What is your intern's name?",
+        name: "internName",
+        validate: name => isNaN(name) ? true : "Please enter a valid name."
+      },
+      {
+        type: "input",
+        message: "What is your intern's ID?",
+        name: "internID",
+        validate: number => !isNaN(number) ? true : "Please enter a valid ID number."
+      },
+      {
+        type: "input",
+        message: "What is your intern's email?",
+        name: "internEmail",
+        validate: email => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email) ? true : "Please enter a valid e-mail address."
+
+      },
+      {
+        type: "input",
+        message: "What school did the intern go to?",
+        name: "school",
+      },
+    ])
+    .then((answers) => {
+      let intern = new Intern(
+        answers.internName,
+        answers.internID,
+        answers.internEmail,
+        answers.school
+      );
+      employees.push(intern);
+      addNewEmployee();
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        console.log("There was an error wrting the file");
+      }
+    });
 }
 
-function newEngineer(){
+// NEW ENGINEER FUNCTION //
+function newEngineer() {
   inquirer
-.prompt([
-  {
-    type: "input",
-    message: "What is your engineer's name?",
-    name: "engineerName",
-  },
-  {
-    type: "input",
-    message: "What is your engineer's ID?",
-    name: "engineerID",
-  },
-  {
-    type: "input",
-    message: "What is your engineer's email?",
-    name: "engineerEmail",
-  },
-  {
-    type: "input",
-    message: "What is the engineer's github user name?",
-    name: "githubName",
-  },
-])
-.then((answers) => {
-  let engineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.githubName)
-  employees.push(engineer)
-})
-.catch((error) => {
-  if (error.isTtyError) {
-    console.log('There was an error wrting the file')
-  }
-});
+    .prompt([
+      {
+        type: "input",
+        message: "What is your engineer's name?",
+        name: "engineerName",
+        validate: name => isNaN(name) ? true : "Please enter a valid name."
+      },
+      {
+        type: "input",
+        message: "What is your engineer's ID?",
+        name: "engineerID",
+        validate: number => !isNaN(number) ? true : "Please enter a valid ID number."
+      },
+      {
+        type: "input",
+        message: "What is your engineer's email?",
+        name: "engineerEmail",
+        validate: email => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email) ? true : "Please enter a valid e-mail address."
+      },
+      {
+        type: "input",
+        message: "What is the engineer's github user name?",
+        name: "githubName",
+        validate: userName => userName.split(' ').length < 2 ? true : "Please enter a valid GitHub username."
+      },
+    ])
+    .then((answers) => {
+      let engineer = new Engineer(
+        answers.engineerName,
+        answers.engineerID,
+        answers.engineerEmail,
+        answers.githubName
+      );
+      employees.push(engineer);
+      addNewEmployee();
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        console.log("There was an error wrting the file");
+      }
+    });
 }
 
-newManager();
-
-function addNewEmployee(){
+// ADD NEW EMPLOYEE FUNCTION
+function addNewEmployee() {
   inquirer
     .prompt([
       {
@@ -233,13 +172,21 @@ function addNewEmployee(){
       } else if (answers.teamMember === "Intern") {
         newIntern();
       } else {
-          console.log("All Team Members Added")
-          console.log("HTML File Created");
+        createHtmlFile();
       }
     })
     .catch((error) => {
       if (error.isTtyError) {
-        console.log('There was an error wrting the file')
+        console.log("There was an error wrting the file");
       }
     });
+}
+
+// CREATE HTML FILE  FUNCTION//
+function createHtmlFile() {
+  let data = render(employees);
+  fs.writeFile(outputPath, data, (err) => {
+    if (err) throw err;
+    console.log("HTML File Created");
+  });
 }
